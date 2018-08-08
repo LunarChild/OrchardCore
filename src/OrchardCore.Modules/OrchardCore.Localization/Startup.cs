@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -30,6 +32,9 @@ namespace OrchardCore.Localization
             // If no specific default culture is defined, use the system language by not calling SetDefaultCulture
             if (!String.IsNullOrEmpty(siteSettings.Culture))
             {
+                // We remove the AcceptLanguageHeaderRequestCultureProvider for now since we can't disable or order it through settings.
+                options.RequestCultureProviders.Remove(options.RequestCultureProviders.OfType<AcceptLanguageHeaderRequestCultureProvider>().First());
+
                 options.SetDefaultCulture(siteSettings.Culture);
             }
 
@@ -37,8 +42,7 @@ namespace OrchardCore.Localization
             {
                 options
                     .AddSupportedCultures(siteSettings.SupportedCultures)
-                    .AddSupportedUICultures(siteSettings.SupportedCultures)
-                    ;
+                    .AddSupportedUICultures(siteSettings.SupportedCultures);
             }
 
             app.UseRequestLocalization(options);
