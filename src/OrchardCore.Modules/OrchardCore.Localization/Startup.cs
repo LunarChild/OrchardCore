@@ -29,7 +29,7 @@ namespace OrchardCore.Localization
 
             var options = new RequestLocalizationOptions();
 
-            // We remove the AcceptLanguageHeaderRequestCultureProvider for now since we can't disable or order it through settings.
+            // We remove the AcceptLanguageHeaderRequestCultureProvider for now untill we find a better way to use/configure it.
             options.RequestCultureProviders.Remove(options.RequestCultureProviders.OfType<AcceptLanguageHeaderRequestCultureProvider>().First());
 
             // If no specific default culture is defined, use the system language by not calling SetDefaultCulture
